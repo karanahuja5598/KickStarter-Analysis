@@ -34,14 +34,22 @@ data<-data[data$currency == "USD",]
 
 dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
 
-test<-dataR$category[1]
-test
-#testp<-sub(".*"name":","",test)
+parseType<-function(test){
+test<-gsub('"', "",test)
+sub(".*:name",",",test)
+test<-sub(".*,name:","",test)
+sub(",.*","",test)
+}
+
+dataR$category<-lapply(data$category,parseType)
+dataR$location<-lapply(data$location,parseType)
 
 # a.	Check for missing data
+dataFinal<-dataR[rowSums(is.na(dataR))==0,]
+
 # b.	Check for outliers, IQR, and summarize the statistics.
-summary(data$backers_count)
-boxplot()
+
+
 # c.	Disect your variables in a way that will help you with your analysis.
 # d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
 # e.	Show your analysis in both tables/charts and visually ( histograms, qqnorm plots, boxplots etc. Statistical Modeling)
