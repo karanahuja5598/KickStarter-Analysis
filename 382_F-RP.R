@@ -5,6 +5,10 @@ data <- read.csv("Kickstarter.csv",na.strings=c("","NA"))
 sum<-summary(data)
 
 # 1)	Set your hypothesis, have a specific goal.
+
+# Success of project based on backers, money raised, and category. (Quanitative variables are)
+# For hyp testing (how do these attributes effect the data)
+
 # Project with #(of backers) is successful, or 
 # Average project in technology raises #($) or
 # Average successful project has (# of backers) or
@@ -28,14 +32,19 @@ data<-data[data$currency == "USD",]
 # (1) backers_count , (2) ?category? , (3) goal [$]
 # (4) pledged [amount of people supporting], (5) usd_pledged [total raised]
 
+dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
+
+test<-dataR$category[1]
+test
+#testp<-sub(".*"name":","",test)
+
 # a.	Check for missing data
-
-
 # b.	Check for outliers, IQR, and summarize the statistics.
+summary(data$backers_count)
+boxplot()
 # c.	Disect your variables in a way that will help you with your analysis.
 # d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
-# e.	Show your analysis in both tables/charts and visually ( histograms, qqnorm plots, boxplots etc.
-#                                                            Statistical Modeling
+# e.	Show your analysis in both tables/charts and visually ( histograms, qqnorm plots, boxplots etc. Statistical Modeling)
 # 6)	Determine correlations, do correlation comparisons ( technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
 # 7)	Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
 # 
