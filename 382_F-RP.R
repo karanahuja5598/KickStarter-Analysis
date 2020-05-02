@@ -48,7 +48,21 @@ dataR$location<-lapply(data$location,parseType)
 dataFinal<-dataR[rowSums(is.na(dataR))==0,]
 
 # b.	Check for outliers, IQR, and summarize the statistics.
+summary(dataFinal$backers_count)
+boxplot.stats(dataFinal$backers_count)$out
+IQR(dataFinal$backers_count)
 
+summary(dataFinal$goal)
+boxplot.stats(dataFinal$goal)$out
+IQR(dataFinal$goal)
+
+summary(dataFinal$pledged)
+boxplot.stats(dataFinal$pledged)$out
+IQR(dataFinal$pledged)
+
+summary(dataFinal$usd_pledged)
+boxplot.stats(dataFinal$usd_pledged)$out
+IQR(dataFinal$usd_pledged)
 
 # c.	Disect your variables in a way that will help you with your analysis.
 # d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
