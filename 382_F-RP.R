@@ -65,8 +65,22 @@ boxplot.stats(dataFinal$usd_pledged)$out
 IQR(dataFinal$usd_pledged)
 
 # c.	Disect your variables in a way that will help you with your analysis.
+typeof(dataFinal$backers_count)
+typeof(dataFinal$goal)
+typeof(dataFinal$category)
+typeof(dataFinal$pledged)
+typeof(dataFinal$usd_pledged)
+
 # d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
+plot(dataFinal$backers_count)
+plot(dataFinal$goal)
+plot(dataFinal$pledged)
+plot(dataFinal$usd_pledged)
+
+# The quantative variables do not follow any distributions.
+
 # e.	Show your analysis in both tables/charts and visually ( histograms, qqnorm plots, boxplots etc. Statistical Modeling)
+
 # 6)	Determine correlations, do correlation comparisons ( technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
 # 7)	Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
 # 
