@@ -166,7 +166,13 @@ qqline(dataFinal$usd_pledged)
 # 6) Determine correlations, do correlation comparisons ( technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
 ```{r correlations}
 
+cor(dataFinal$category, dataFinal$backers_count)
 
+cor(dataFinal$category, dataFinal$goal)
+
+cor(dataFinal$category, dataFinal$pledged)
+
+cor(dataFinal$category, dataFinal$usd_pledged)
 
 ```
 
