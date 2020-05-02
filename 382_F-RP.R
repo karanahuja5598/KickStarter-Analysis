@@ -25,24 +25,26 @@ data<-data[data$currency == "USD",]
 
 # 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
 # 
+
+dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
+
+parseType<-function(test){
+  test<-gsub('"', "",test)
+  sub(".*:name",",",test)
+  test<-sub(".*,name:","",test)
+  sub(",.*","",test)
+}
+
+dataR$category<-lapply(data$category,parseType)
+dataR$location<-lapply(data$location,parseType)
+
+
 # Exploratory Analysis
 # 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
 
 # Varialbles we want to focus on / analyze :
 # (1) backers_count , (2) ?category? , (3) goal [$]
 # (4) pledged [amount of people supporting], (5) usd_pledged [total raised]
-
-dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
-
-parseType<-function(test){
-test<-gsub('"', "",test)
-sub(".*:name",",",test)
-test<-sub(".*,name:","",test)
-sub(",.*","",test)
-}
-
-dataR$category<-lapply(data$category,parseType)
-dataR$location<-lapply(data$location,parseType)
 
 # a.	Check for missing data
 dataFinal<-dataR[rowSums(is.na(dataR))==0,]
