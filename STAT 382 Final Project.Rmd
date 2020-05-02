@@ -101,14 +101,32 @@ IQR(dataFinal$usd_pledged)
 # 5c.	Disect your variables in a way that will help you with your analysis.
 ```{r variable dissection}
 
+typeof(dataFinal$backers_count)
 
+typeof(dataFinal$goal)
+
+typeof(dataFinal$category)
+
+typeof(dataFinal$pledged)
+
+typeof(dataFinal$usd_pledged)
 
 ```
 
 # 5d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
 ```{r distribution}
 
+par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
 
+plot(dataFinal$backers_count)
+
+plot(dataFinal$goal)
+
+plot(dataFinal$pledged)
+
+plot(dataFinal$usd_pledged)
+
+cat("The quantative variables do not follow any distributions.")
 
 ```
 
