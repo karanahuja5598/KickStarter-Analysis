@@ -49,18 +49,6 @@ https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3
 # 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
 ```{r clean up}
 
-
-
-```
-
-Exploratory Analysis
-# 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
-
-# Varialbles we want to focus on / analyze :
-# (1) backers_count , (2) ?category? , (3) goal [$]
-# (4) pledged [amount of people supporting], (5) usd_pledged [total raised]
-```{r category clean up}
-
 dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
 
 parseType<-function(test){
@@ -74,6 +62,13 @@ dataR$category<-lapply(data$category,parseType)
 dataR$location<-lapply(data$location,parseType)
 
 ```
+
+Exploratory Analysis
+# 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
+
+# Varialbles we want to focus on / analyze :
+# (1) backers_count , (2) ?category? , (3) goal [$]
+# (4) pledged [amount of people supporting], (5) usd_pledged [total raised]
 
 # 5a. Check for missing data
 ```{r missing data check}
@@ -106,14 +101,32 @@ IQR(dataFinal$usd_pledged)
 # 5c.	Disect your variables in a way that will help you with your analysis.
 ```{r variable dissection}
 
+typeof(dataFinal$backers_count)
 
+typeof(dataFinal$goal)
+
+typeof(dataFinal$category)
+
+typeof(dataFinal$pledged)
+
+typeof(dataFinal$usd_pledged)
 
 ```
 
 # 5d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
 ```{r distribution}
 
+par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
 
+plot(dataFinal$backers_count)
+
+plot(dataFinal$goal)
+
+plot(dataFinal$pledged)
+
+plot(dataFinal$usd_pledged)
+
+cat("The quantative variables do not follow any distributions.")
 
 ```
 
@@ -203,6 +216,7 @@ Your Presentation should be narrated, or you should create a recorded video, pre
   	Conclusions
   	Future questions and further analysis not addressed in this project
   	References
+
 
 
 
