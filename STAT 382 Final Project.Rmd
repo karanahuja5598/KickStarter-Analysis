@@ -120,7 +120,33 @@ IQR(dataFinal$usd_pledged)
 # 5e. Show your analysis in both tables/charts and visually (histograms, qqnorm plots, boxplots etc.Statistical Modeling)
 ```{r tables/charts and graphs}
 
+par(mfrow = c(3,3)) #Creates a 3 x 3 picture of the graphs
 
+#Backer Count
+hist(dataFinal$backers_count)
+boxplot(dataFinal$backers_count)
+qqnorm(dataFinal$backers_count)
+qqline(dataFinal$backers_count)
+
+#Goal
+hist(dataFinal$goal)
+boxplot(dataFinal$goal)
+qqnorm(dataFinal$goal)
+qqline(dataFinal$goal)
+
+#Pledged
+hist(dataFinal$pledged)
+boxplot(dataFinal$pledged)
+qqnorm(dataFinal$pledged)
+qqline(dataFinal$pledged)
+
+par(mfrow = c(2, 3)) #Creates a 2 x 3 picture of the graphs
+
+#USD Pledged
+hist(dataFinal$usd_pledged)
+boxplot(dataFinal$usd_pledged)
+qqnorm(dataFinal$usd_pledged)
+qqline(dataFinal$usd_pledged)
 
 ```
 
@@ -177,6 +203,8 @@ Your Presentation should be narrated, or you should create a recorded video, pre
   	Conclusions
   	Future questions and further analysis not addressed in this project
   	References
+
+
 
 
 
