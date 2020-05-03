@@ -73,7 +73,7 @@ Exploratory Analysis
 # 5a. Check for missing data
 ```{r missing data check}
 
-dataFinal<-dataR[rowSums(is.na(dataR))==0,]
+dataFinal <- dataR[rowSums(is.na(dataR))==0,]
 
 ```
 
@@ -164,15 +164,26 @@ qqline(dataFinal$usd_pledged)
 ```
 
 # 6) Determine correlations, do correlation comparisons ( technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
-```{r correlations}
+```{r adding an id to the items under category, include=FALSE}
 
-cor(dataFinal$category, dataFinal$backers_count)
+unique(dataFinal$category)
+dataFinal <- transform(dataFinal, id = match(category, unique(category))) 
 
-cor(dataFinal$category, dataFinal$goal)
+```
 
-cor(dataFinal$category, dataFinal$pledged)
+The portion above adds a new column labeled "id". Every unique item under category was given a unique id.
 
-cor(dataFinal$category, dataFinal$usd_pledged)
+```{r correlation}
+
+cor(dataFinal$id, dataFinal$backers_count)
+
+cor(dataFinal$id, dataFinal$goal)
+
+cor(dataFinal$id, dataFinal$pledged)
+
+cor(dataFinal$id, dataFinal$usd_pledged)
+
+cat("All of our correlations are negative. This suggests that there is an inverse relationship between category and backer count, goal, pledged, and usd_pledged.")
 
 ```
 
