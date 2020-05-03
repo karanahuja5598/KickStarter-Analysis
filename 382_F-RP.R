@@ -25,24 +25,26 @@ data<-data[data$currency == "USD",]
 
 # 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
 # 
+
+dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
+
+parseType<-function(test){
+  test<-gsub('"', "",test)
+  sub(".*:name",",",test)
+  test<-sub(".*,name:","",test)
+  sub(",.*","",test)
+}
+
+dataR$category<-lapply(data$category,parseType)
+dataR$location<-lapply(data$location,parseType)
+
+
 # Exploratory Analysis
 # 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
 
 # Varialbles we want to focus on / analyze :
 # (1) backers_count , (2) ?category? , (3) goal [$]
 # (4) pledged [amount of people supporting], (5) usd_pledged [total raised]
-
-dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
-
-parseType<-function(test){
-test<-gsub('"', "",test)
-sub(".*:name",",",test)
-test<-sub(".*,name:","",test)
-sub(",.*","",test)
-}
-
-dataR$category<-lapply(data$category,parseType)
-dataR$location<-lapply(data$location,parseType)
 
 # a.	Check for missing data
 dataFinal<-dataR[rowSums(is.na(dataR))==0,]
@@ -65,8 +67,22 @@ boxplot.stats(dataFinal$usd_pledged)$out
 IQR(dataFinal$usd_pledged)
 
 # c.	Disect your variables in a way that will help you with your analysis.
+typeof(dataFinal$backers_count)
+typeof(dataFinal$goal)
+typeof(dataFinal$category)
+typeof(dataFinal$pledged)
+typeof(dataFinal$usd_pledged)
+
 # d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
+plot(dataFinal$backers_count)
+plot(dataFinal$goal)
+plot(dataFinal$pledged)
+plot(dataFinal$usd_pledged)
+
+# The quantative variables do not follow any distributions.
+
 # e.	Show your analysis in both tables/charts and visually ( histograms, qqnorm plots, boxplots etc. Statistical Modeling)
+
 # 6)	Determine correlations, do correlation comparisons ( technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
 # 7)	Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
 # 
