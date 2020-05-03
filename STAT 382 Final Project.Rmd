@@ -163,7 +163,7 @@ qqline(dataFinal$usd_pledged)
 
 ```
 
-# 6) Determine correlations, do correlation comparisons ( technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
+# 6) Determine correlations, do correlation comparisons (technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
 ```{r adding an id to the items under category, include=FALSE}
 
 unique(dataFinal$category)
@@ -172,6 +172,27 @@ dataFinal <- transform(dataFinal, id = match(category, unique(category)))
 ```
 
 The portion above adds a new column labeled "id". Every unique item under category was given a unique id.
+
+```{r scatter plots}
+
+par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
+
+plot(dataFinal$id, dataFinal$backers_count, xlab = "Category", ylab = "Backer Count", main = "Category vs Backer Count", col = "deepskyblue3")
+
+plot(dataFinal$id, dataFinal$goal, xlab = "Category", ylab = "Goal", main = "Category vs Goal", col = "deepskyblue3")
+
+plot(dataFinal$id, dataFinal$pledged, xlab = "Category", ylab = "Pledged", main = "Category vs Pledged", col = "deepskyblue3")
+
+plot(dataFinal$id, dataFinal$usd_pledged, xlab = "Category", ylab = "USD Pledged", main = "Category vs USD Pledged", col = "deepskyblue3")
+
+```
+
+```{r scatter plot matrix}
+
+pairs(~dataFinal$backers_count + dataFinal$goal + dataFinal$pledged + dataFinal$usd_pledged +
+       dataFinal$id, main = "Backer Count, Goal, Pledged, USD Pledged vs Category")
+
+```
 
 ```{r correlation}
 
