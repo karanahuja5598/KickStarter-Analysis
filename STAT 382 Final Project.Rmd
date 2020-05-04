@@ -16,12 +16,20 @@ knitr::opts_chunk$set(echo = TRUE, out.width = "140%")
 # Framework
 ```{r file and summary}
 
-data <- read.csv("Kickstarter.csv",na.strings=c("","NA"))
 
-sum<-summary(data)
+# Read 4 of same data set, combine.
+# read = list.files(pattern="*.csv")
+# datatest<-lapply(read,read.csv,na.strings=c("","NA"))
+#data1<-data.frame(datatest[1])
+#data2<-data.frame(datatest[2])
+#data3<-data.frame(datatest[3])
+#data4<-data.frame(datatest[4])
+#data<-rbind(data1,data2,data3,data4)
+#write.csv(data,file = "KickstarterBig.csv")
+#Read in big data set
+data <- read.csv("KickstarterBig.csv",na.strings=c("","NA"))
 
 ```
-
 # 1) Set your hypothesis, have a specific goal.
 # Success of project based on backers, money raised, and category. (Quanitative variables are)
 # For hyp testing (how do these attributes effect the data)
@@ -59,15 +67,29 @@ data<-data[data$state != "live",]
 
 dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
 
-parseType<-function(test){
+parseCateg<-function(test){
 test<-gsub('"', "",test)
-sub(".*:name",",",test)
-test<-sub(".*,name:","",test)
+sub(".*:parent_name",",",test)
+test<-sub(".*slug:","",test)
 sub(",.*","",test)
+test<-gsub("/.*","",test)
+test<-gsub(",.*","",test)
 }
 
-dataR$category<-lapply(data$category,parseType)
-dataR$location<-lapply(data$location,parseType)
+parseLoc<-function(test){
+  test<-gsub('"', "",test)
+  sub(".*:name",",",test)
+  test<-sub(".*,name:","",test)
+  sub(",.*","",test)
+}
+
+
+dataR$category<-lapply(data$category,parseCateg)
+dataR$location<-lapply(data$location,parseLoc)
+
+
+UniqueCat <- unique(dataR$category)
+print("The categories:",str(UniqueCat))
 
 # Factorize descriptions
 
@@ -78,7 +100,9 @@ dataR$category <- as.factor(dataR$category)
 
 Exploratory Analysis
 # 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
+
 # Varialbles we want to focus on / analyze :
+
 # (1) backers_count
 # (2) category of project
 # (3) goal amount [USD for project]
@@ -86,19 +110,32 @@ Exploratory Analysis
 # (5) usd_pledged [total raised]
 
 # 5a. Check for missing data
-```{r missing data check}
+```{r missing data check / more prelims }
 
+# Clean data
 dataFinal <- dataR[rowSums(is.na(dataR))==0,]
+
+# TODO : make the success / fail samples and tables for prelim observations.
+Succ<-dataFinal[dataFinal$state == "successful",]
+summary(Succ)
+Fail<-dataFinal[dataFinal$state == "failed",]
+
+# need to add a % of goal reached.
+dataFinal$pReached<- ifelse(dataFinal$state == "successful",((dataFinal$pledged/dataFinal$goal)*100),
+                            ((dataFinal$goal - dataFinal$pledged) / dataFinal$goal)* 100)
+
 
 ```
 
 # 5b.	Check for outliers, IQR, and summarize the statistics.
 # TODO : Make actual plots, and list the outliers ( how many, what are they, where are they from)
+
 ```{r outliers, IQR, and statistic summaries}
 
 summary(dataFinal$backers_count)
 boxplot.stats(dataFinal$backers_count)$out
 IQR(dataFinal$backers_count)
+boxplot(dataFinal$backers_count)
 
 summary(dataFinal$goal)
 boxplot.stats(dataFinal$goal)$out
@@ -115,22 +152,12 @@ IQR(dataFinal$usd_pledged)
 ```
 
 # 5c.	Disect your variables in a way that will help you with your analysis.
-# David : working on this currently. Going to categorize the data by (category)
 ```{r variable dissection}
-
-
-typeof(dataFinal$backers_count)
-typeof(dataFinal$goal)
-typeof(dataFinal$category)
-typeof(dataFinal$pledged)
-typeof(dataFinal$usd_pledged)
 
 # ----- lets categorise the data by type of project ----- #
 
-barplot(table(dataFinal$category),col= rainbow(5),las = 2,cex.names = .25,horiz = FALSE,ylim=c(0,140),beside=TRUE, xpd = FALSE, width = 141)
+barplot(table(dataFinal$category),col= rainbow(15),las = 2,cex.names = .85,horiz = FALSE,beside=TRUE, xpd = FALSE, main="Project category popularity", ylab="Number of projects")
 
-title(xlab="", line=4, cex.lab=1)
-mtext(text="Categories popularity", side=1, line=6.5)
 
 ```
 
