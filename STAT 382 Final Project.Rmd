@@ -1,13 +1,16 @@
 ---
 title: "Final Project"
+
 output:
   html_document: default
   pdf_document: default
-
 ---
+<style type="text/css">
+.main-container {max-width: 1800px;margin-left: auto;margin-right: auto;}
+</style>
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, out.width = "140%")
 ```
 
 # Framework
@@ -26,10 +29,11 @@ sum<-summary(data)
 # Project with #(of backers) is successful, or 
 # Average project in technology raises #($) or
 # Average successful project has (# of backers) or
-# ....... (this can be whatever u guys want.)
+
 
 ```{r hypothesis}
 
+# ....... (this can be whatever u guys want.)
 
 
 ```
@@ -123,8 +127,10 @@ typeof(dataFinal$usd_pledged)
 
 # ----- lets categorise the data by type of project ----- #
 
-barplot(table(dataFinal$category),cex.lab=1, cex.axis=.5,col= rainbow(5),las = 2,cex.names = 1)
+barplot(table(dataFinal$category),col= rainbow(5),las = 2,cex.names = .25,horiz = FALSE,ylim=c(0,140),beside=TRUE, xpd = FALSE, width = 141)
+
 title(xlab="", line=4, cex.lab=1)
+mtext(text="Categories popularity", side=1, line=6.5)
 
 ```
 
