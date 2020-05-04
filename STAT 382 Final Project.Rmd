@@ -1,6 +1,8 @@
 ---
 title: "Final Project"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -67,8 +69,11 @@ Exploratory Analysis
 # 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
 
 # Varialbles we want to focus on / analyze :
-# (1) backers_count , (2) ?category? , (3) goal [$]
-# (4) pledged [amount of people supporting], (5) usd_pledged [total raised]
+# (1) backers_count
+# (2) category of project
+# (3) goal amount [USD for project]
+# (4) pledged [amount of people supporting]
+# (5) usd_pledged [total raised]
 
 # 5a. Check for missing data
 ```{r missing data check}
