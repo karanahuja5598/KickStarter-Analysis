@@ -3,13 +3,14 @@ title: "Final Project"
 output:
   html_document: default
   pdf_document: default
+
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#Framework
+# Framework
 ```{r file and summary}
 
 data <- read.csv("Kickstarter.csv",na.strings=c("","NA"))
@@ -18,7 +19,7 @@ sum<-summary(data)
 
 ```
 
-1) Set your hypothesis, have a specific goal.
+# 1) Set your hypothesis, have a specific goal.
 # Success of project based on backers, money raised, and category. (Quanitative variables are)
 # For hyp testing (how do these attributes effect the data)
 
@@ -35,17 +36,18 @@ sum<-summary(data)
 
 # 2)	Review your data to ensure that they are appropriate and complete and can help you prove or disprove your hypothesis.
 
-# we want to only base our research on project on USD income.
+# we want to only base our research on project on USD income and have finished.
 
 ```{r data review}
 
 data<-data[data$currency == "USD",]
+data<-data[data$state != "live",]
 
 ```
 
 # 3)	Complete literature review on the subject/hypothesis and determine if there is any relevant research/study has been already completed. Study the literature and include citations in your final report.
 
-https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3f4a976419b9
+# https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3f4a976419b9
 
 
 # 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
@@ -63,11 +65,15 @@ sub(",.*","",test)
 dataR$category<-lapply(data$category,parseType)
 dataR$location<-lapply(data$location,parseType)
 
+# Factorize descriptions
+
+dataR <- as.data.frame(lapply(dataR, unlist))
+dataR$category <- as.factor(dataR$category)
+
 ```
 
 Exploratory Analysis
 # 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
-
 # Varialbles we want to focus on / analyze :
 # (1) backers_count
 # (2) category of project
@@ -83,6 +89,7 @@ dataFinal <- dataR[rowSums(is.na(dataR))==0,]
 ```
 
 # 5b.	Check for outliers, IQR, and summarize the statistics.
+# TODO : Make actual plots, and list the outliers ( how many, what are they, where are they from)
 ```{r outliers, IQR, and statistic summaries}
 
 summary(dataFinal$backers_count)
@@ -104,21 +111,27 @@ IQR(dataFinal$usd_pledged)
 ```
 
 # 5c.	Disect your variables in a way that will help you with your analysis.
+# David : working on this currently. Going to categorize the data by (category)
 ```{r variable dissection}
 
+
 typeof(dataFinal$backers_count)
-
 typeof(dataFinal$goal)
-
 typeof(dataFinal$category)
-
 typeof(dataFinal$pledged)
-
 typeof(dataFinal$usd_pledged)
+
+# ----- lets categorise the data by type of project ----- #
+
+barplot(table(dataFinal$category),cex.lab=1, cex.axis=.5,col= rainbow(5),las = 2,cex.names = 1)
+title(xlab="", line=4, cex.lab=1)
 
 ```
 
 # 5d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
+# TODO  : Make this pretty, with labels, colors, ect, on graphs, and then make summaries of data here so we can
+# Transfer that directly onto our presentation when we are making the powerpoint
+
 ```{r distribution}
 
 par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
@@ -136,6 +149,8 @@ cat("The quantative variables do not follow any distributions.")
 ```
 
 # 5e. Show your analysis in both tables/charts and visually (histograms, qqnorm plots, boxplots etc.Statistical Modeling)
+# TODO : analysis 
+
 ```{r tables/charts and graphs}
 
 par(mfrow = c(3,3)) #Creates a 3 x 3 picture of the graphs
