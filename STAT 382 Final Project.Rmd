@@ -16,6 +16,8 @@ knitr::opts_chunk$set(echo = TRUE, out.width = "140%")
 # Framework
 ```{r file and summary}
 
+library(arsenal) # used for compare
+
 
 # Read 4 of same data set, combine.
 # read = list.files(pattern="*.csv")
@@ -64,8 +66,8 @@ data<-data[data$state != "live",]
 
 # 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
 ```{r clean up}
-
-dataR<-data[c(1,3,5,6,9,17,23,27,33,37)]
+dataR<-data[-1]
+dataR<-dataR[c(1,3,5,9,17,23,27,33)]
 
 parseCateg<-function(test){
 test<-gsub('"', "",test)
@@ -114,16 +116,26 @@ Exploratory Analysis
 
 # Clean data
 dataFinal <- dataR[rowSums(is.na(dataR))==0,]
+# make the success / fail samples and tables for prelim observations.
 
-# TODO : make the success / fail samples and tables for prelim observations.
+# need to add a % of goal reached. 
+# dataFinal$pledged<- as.integer(dataFinal$pledged)
+# dataFinal$goal<- as.integer(dataFinal$goal)
+
+dataFinal$pReached<- ifelse(dataFinal$state == "successful",( (dataFinal$pledged / dataFinal$goal) ),
+                                                            ( (dataFinal$goal - dataFinal$pledged) / dataFinal$goal) )
+# convert to percentages # why does this not work
+dataFinal$pReached<- ifelse(dataFinal$state == "successful", ( dataFinal$pReached*100 ), ( dataFinal$pReached/100 ))
+
+
+#scales::percent(dataFinal$pReached)
+
+# Summarise  the two different data sets to see which projects succeed the most or fail the most
 Succ<-dataFinal[dataFinal$state == "successful",]
-summary(Succ)
 Fail<-dataFinal[dataFinal$state == "failed",]
 
-# need to add a % of goal reached.
-dataFinal$pReached<- ifelse(dataFinal$state == "successful",((dataFinal$pledged/dataFinal$goal)*100),
-                            ((dataFinal$goal - dataFinal$pledged) / dataFinal$goal)* 100)
 
+#summary(comparedf(Succ, Fail))
 
 ```
 
@@ -132,22 +144,20 @@ dataFinal$pReached<- ifelse(dataFinal$state == "successful",((dataFinal$pledged/
 
 ```{r outliers, IQR, and statistic summaries}
 
-summary(dataFinal$backers_count)
-boxplot.stats(dataFinal$backers_count)$out
+#summary(dataFinal$backers_count)
+#boxplot.stats(dataFinal$backers_count)$out
 IQR(dataFinal$backers_count)
 boxplot(dataFinal$backers_count)
 
-summary(dataFinal$goal)
-boxplot.stats(dataFinal$goal)$out
+#summary(dataFinal$goal)
+#boxplot.stats(dataFinal$goal)$out
 IQR(dataFinal$goal)
 
-summary(dataFinal$pledged)
-boxplot.stats(dataFinal$pledged)$out
+#summary(dataFinal$pledged)
+#boxplot.stats(dataFinal$pledged)$out
 IQR(dataFinal$pledged)
 
-summary(dataFinal$usd_pledged)
-boxplot.stats(dataFinal$usd_pledged)$out
-IQR(dataFinal$usd_pledged)
+# TODO : add others here.... 
 
 ```
 
@@ -172,7 +182,7 @@ par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
 plot(dataFinal$backers_count, ylab = "# of Backers", main = "Backer Count", col = "deepskyblue3")
 plot(dataFinal$goal, ylab = "Goals in $", main = "Monetary Goal", col = "purple3")
 plot(dataFinal$pledged, ylab = "Amount pledged", main = "Pledged", col = "indianred3")
-plot(dataFinal$usd_pledged, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
+plot(dataFinal$pReached, ylab = "Amount Reached to goal", main = "USD Pledged", col = "goldenrod1")
 
 ```
 
@@ -183,7 +193,7 @@ plot(dataFinal$usd_pledged, ylab = "Amount Pledged in USD", main = "USD Pledged"
 summary(dataFinal$backers_count)
 summary(dataFinal$goal)
 summary(dataFinal$pledged)
-summary(dataFinal$usd_pledged)
+summary(dataFinal$dataFinal$pReached)
 
 ```
 
@@ -215,10 +225,10 @@ qqline(dataFinal$pledged)
 par(mfrow = c(1, 3)) #Creates a 1 x 3 picture of the graphs
 
 #USD Pledged
-hist(dataFinal$usd_pledged, xlab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
-boxplot(dataFinal$usd_pledged, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
-qqnorm(dataFinal$usd_pledged, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
-qqline(dataFinal$usd_pledged)
+hist(dataFinal$pReached, xlab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
+boxplot(dataFinal$pReached, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
+qqnorm(dataFinal$pReached, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
+qqline(dataFinal$pReached)
 
 ```
 
@@ -233,6 +243,7 @@ dataFinal <- transform(dataFinal, id = match(category, unique(category)))
 The portion above adds a new column labeled "id". Every unique item under category was given a unique id.
 
 ```{r scatter plots}
+# TODO: FIX ALL THESE BY CATEGORY
 
 par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
 
@@ -242,13 +253,16 @@ plot(dataFinal$id, dataFinal$goal, xlab = "Category", ylab = "Goal", main = "Cat
 
 plot(dataFinal$id, dataFinal$pledged, xlab = "Category", ylab = "Pledged", main = "Category vs Pledged", col = "indianred3")
 
-plot(dataFinal$id, dataFinal$usd_pledged, xlab = "Category", ylab = "USD Pledged", main = "Category vs USD Pledged", col = "goldenrod1")
+# Fix this one
+plot(dataFinal$id, dataFinal$pReached, xlab = "gfdgfdgfd ", ylab = "gfdgfdgdfgd", main = "Category vs % Raised", col = "goldenrod1")
 
 ```
 
 ```{r scatter plot matrix}
 
-pairs(~dataFinal$backers_count + dataFinal$goal + dataFinal$pledged + dataFinal$usd_pledged +
+# fix it to be by category
+
+pairs(~dataFinal$backers_count + dataFinal$goal + dataFinal$pledged + dataFinal$pReached +
        dataFinal$id, main = "Backer Count, Goal, Pledged, USD Pledged vs Category")
 
 ```
@@ -261,7 +275,7 @@ cor(dataFinal$id, dataFinal$goal)
 
 cor(dataFinal$id, dataFinal$pledged)
 
-cor(dataFinal$id, dataFinal$usd_pledged)
+cor(dataFinal$id, dataFinal$pReached)
 
 cat("All of our correlations are negative. This suggests that there is an inverse relationship between category and backer count, goal, pledged, and usd_pledged.")
 
