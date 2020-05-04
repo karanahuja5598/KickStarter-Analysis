@@ -53,9 +53,14 @@ data <- read.csv("KickstarterBig.csv",na.strings=c("","NA"))
 # we want to only base our research on project on USD income and have finished.
 
 ```{r data review}
-
+# We want to focus on US data only that have completed the project deadline.
 data<-data[data$currency == "USD",]
 data<-data[data$state != "live",]
+data<-data[data$state != "canceled",]
+
+#Lets assume projects under goal of 100$ USD are innacurate data of reasonable project.
+
+data<-data[data$goal > 100,]
 
 ```
 
@@ -118,22 +123,16 @@ Exploratory Analysis
 dataFinal <- dataR[rowSums(is.na(dataR))==0,]
 # make the success / fail samples and tables for prelim observations.
 
-# need to add a % of goal reached. 
-# dataFinal$pledged<- as.integer(dataFinal$pledged)
-# dataFinal$goal<- as.integer(dataFinal$goal)
-
 dataFinal$pReached<- ifelse(dataFinal$state == "successful",( (dataFinal$pledged / dataFinal$goal) ),
                                                             ( (dataFinal$goal - dataFinal$pledged) / dataFinal$goal) )
-# convert to percentages # why does this not work
-dataFinal$pReached<- ifelse(dataFinal$state == "successful", ( dataFinal$pReached*100 ), ( dataFinal$pReached/100 ))
-
-
-#scales::percent(dataFinal$pReached)
+# convert to percentages
+dataFinal$pReached<- ifelse(dataFinal$state == "successful", ( dataFinal$pReached * 100 ), ( dataFinal$pReached / 100 ))
 
 # Summarise  the two different data sets to see which projects succeed the most or fail the most
 Succ<-dataFinal[dataFinal$state == "successful",]
 Fail<-dataFinal[dataFinal$state == "failed",]
 
+table(dataFinal$state)
 
 #summary(comparedf(Succ, Fail))
 
@@ -146,6 +145,7 @@ Fail<-dataFinal[dataFinal$state == "failed",]
 
 #summary(dataFinal$backers_count)
 #boxplot.stats(dataFinal$backers_count)$out
+
 IQR(dataFinal$backers_count)
 boxplot(dataFinal$backers_count)
 
@@ -243,18 +243,18 @@ dataFinal <- transform(dataFinal, id = match(category, unique(category)))
 The portion above adds a new column labeled "id". Every unique item under category was given a unique id.
 
 ```{r scatter plots}
-# TODO: FIX ALL THESE BY CATEGORY
+# TODO: Change to by category or leave as ID.
 
-par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
+#Creates a 1 x 4 picture of the graphs
 
-plot(dataFinal$id, dataFinal$backers_count, xlab = "Category", ylab = "Backer Count", main = "Category vs Backer Count", col = "deepskyblue3")
+plot(dataFinal$category, dataFinal$backers_count, xlab = "", ylab = "Backer Count", main = "Category vs Backer Count", col = "deepskyblue3",las =2, cex.names = .5)
 
-plot(dataFinal$id, dataFinal$goal, xlab = "Category", ylab = "Goal", main = "Category vs Goal", col = "purple3")
+plot(dataFinal$category, dataFinal$goal, xlab = "", ylab = "Goal", main = "Category vs Goal", col = "purple3",las =2,cex.names = .5)
 
-plot(dataFinal$id, dataFinal$pledged, xlab = "Category", ylab = "Pledged", main = "Category vs Pledged", col = "indianred3")
 
-# Fix this one
-plot(dataFinal$id, dataFinal$pReached, xlab = "gfdgfdgfd ", ylab = "gfdgfdgdfgd", main = "Category vs % Raised", col = "goldenrod1")
+plot(dataFinal$category, dataFinal$pledged, xlab = "", ylab = "Pledged", main = "Category vs Pledged", col = "indianred3",las =2,cex.names = .5)
+
+plot(dataFinal$category, dataFinal$pReached, xlab = "", ylab = "Percentage Raised",cex.names = .25, main = "Category vs % Raised", col = "goldenrod1",las =2,beside=TRUE, xpd = FALSE)
 
 ```
 
@@ -263,21 +263,22 @@ plot(dataFinal$id, dataFinal$pReached, xlab = "gfdgfdgfd ", ylab = "gfdgfdgdfgd"
 # fix it to be by category
 
 pairs(~dataFinal$backers_count + dataFinal$goal + dataFinal$pledged + dataFinal$pReached +
-       dataFinal$id, main = "Backer Count, Goal, Pledged, USD Pledged vs Category")
+       dataFinal$category, main = "Backer Count, Goal, Pledged, USD Pledged vs Category")
 
 ```
 
 ```{r correlation}
 
-cor(dataFinal$id, dataFinal$backers_count)
+cor(as.numeric(dataFinal$category), dataFinal$backers_count)
 
-cor(dataFinal$id, dataFinal$goal)
+cor(as.numeric(dataFinal$category), dataFinal$goal)
 
-cor(dataFinal$id, dataFinal$pledged)
+cor(as.numeric(dataFinal$category), dataFinal$pledged)
 
-cor(dataFinal$id, dataFinal$pReached)
+cor(as.numeric(dataFinal$category), dataFinal$pReached)
 
-cat("All of our correlations are negative. This suggests that there is an inverse relationship between category and backer count, goal, pledged, and usd_pledged.")
+#TODO :
+cat("COR analasys here")
 
 ```
 
