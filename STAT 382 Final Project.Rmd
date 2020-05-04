@@ -134,7 +134,7 @@ mtext(text="Categories popularity", side=1, line=6.5)
 
 ```
 
-# 5d.	Determine the distribution ( if any that your data follow, experimentally and theoretically)
+# 5d.	Determine the distribution (if any that your data follow, experimentally and theoretically)
 # TODO  : Make this pretty, with labels, colors, ect, on graphs, and then make summaries of data here so we can
 # Transfer that directly onto our presentation when we are making the powerpoint
 
@@ -142,15 +142,21 @@ mtext(text="Categories popularity", side=1, line=6.5)
 
 par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
 
-plot(dataFinal$backers_count)
+plot(dataFinal$backers_count, ylab = "# of Backers", main = "Backer Count", col = "deepskyblue3")
+plot(dataFinal$goal, ylab = "Goals in $", main = "Monetary Goal", col = "purple3")
+plot(dataFinal$pledged, ylab = "Amount pledged", main = "Pledged", col = "indianred3")
+plot(dataFinal$usd_pledged, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
 
-plot(dataFinal$goal)
+```
 
-plot(dataFinal$pledged)
+#The quantative variables do not follow any distributions.
 
-plot(dataFinal$usd_pledged)
+```{r summary}
 
-cat("The quantative variables do not follow any distributions.")
+summary(dataFinal$backers_count)
+summary(dataFinal$goal)
+summary(dataFinal$pledged)
+summary(dataFinal$usd_pledged)
 
 ```
 
@@ -162,29 +168,29 @@ cat("The quantative variables do not follow any distributions.")
 par(mfrow = c(3,3)) #Creates a 3 x 3 picture of the graphs
 
 #Backer Count
-hist(dataFinal$backers_count, main = "Backers", xlab = "Backer Count")
-boxplot(dataFinal$backers_count)
-qqnorm(dataFinal$backers_count)
+hist(dataFinal$backers_count, xlab = "# of Backers", main = "Backer Count", col = "deepskyblue3")
+boxplot(dataFinal$backers_count, ylab = "# of backers", main = "Backer Count", col = "deepskyblue3")
+qqnorm(dataFinal$backers_count, ylab = "# of backers", main = "Backer Count", col = "deepskyblue3")
 qqline(dataFinal$backers_count)
 
 #Goal
-hist(dataFinal$goal, main = "Goal")
-boxplot(dataFinal$goal)
-qqnorm(dataFinal$goal)
+hist(dataFinal$goal, xlab = "Goal in $", main = "Monetary Goal", col = "purple3")
+boxplot(dataFinal$goal, ylab = "Goal in $", main = "Monetary Goal", col = "purple3")
+qqnorm(dataFinal$goal, ylab = "Goal in $", main = "Monetary Goal", col = "purple3")
 qqline(dataFinal$goal)
 
 #Pledged
-hist(dataFinal$pledged, main = "Pledged")
-boxplot(dataFinal$pledged)
-qqnorm(dataFinal$pledged)
+hist(dataFinal$pledged, xlab = "Amount Pledged", main = "Pledged", col = "indianred3")
+boxplot(dataFinal$pledged, ylab = "Amount Pledged", main = "Pledged", col = "indianred3")
+qqnorm(dataFinal$pledged, ylab = "Amount Pledged", main = "Pledged", col = "indianred3")
 qqline(dataFinal$pledged)
 
-par(mfrow = c(1, 3)) #Creates a 2 x 3 picture of the graphs
+par(mfrow = c(1, 3)) #Creates a 1 x 3 picture of the graphs
 
 #USD Pledged
-hist(dataFinal$usd_pledged, main = "USD Pledged")
-boxplot(dataFinal$usd_pledged)
-qqnorm(dataFinal$usd_pledged)
+hist(dataFinal$usd_pledged, xlab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
+boxplot(dataFinal$usd_pledged, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
+qqnorm(dataFinal$usd_pledged, ylab = "Amount Pledged in USD", main = "USD Pledged", col = "goldenrod1")
 qqline(dataFinal$usd_pledged)
 
 ```
@@ -205,11 +211,11 @@ par(mfrow = c(1, 4)) #Creates a 1 x 4 picture of the graphs
 
 plot(dataFinal$id, dataFinal$backers_count, xlab = "Category", ylab = "Backer Count", main = "Category vs Backer Count", col = "deepskyblue3")
 
-plot(dataFinal$id, dataFinal$goal, xlab = "Category", ylab = "Goal", main = "Category vs Goal", col = "deepskyblue3")
+plot(dataFinal$id, dataFinal$goal, xlab = "Category", ylab = "Goal", main = "Category vs Goal", col = "purple3")
 
-plot(dataFinal$id, dataFinal$pledged, xlab = "Category", ylab = "Pledged", main = "Category vs Pledged", col = "deepskyblue3")
+plot(dataFinal$id, dataFinal$pledged, xlab = "Category", ylab = "Pledged", main = "Category vs Pledged", col = "indianred3")
 
-plot(dataFinal$id, dataFinal$usd_pledged, xlab = "Category", ylab = "USD Pledged", main = "Category vs USD Pledged", col = "deepskyblue3")
+plot(dataFinal$id, dataFinal$usd_pledged, xlab = "Category", ylab = "USD Pledged", main = "Category vs USD Pledged", col = "goldenrod1")
 
 ```
 
