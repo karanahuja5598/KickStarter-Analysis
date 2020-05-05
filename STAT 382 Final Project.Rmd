@@ -149,8 +149,8 @@ cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$backers_count)$out)))
 cat("IQR: ", IQR(dataFinal$backers_count))
 
 par(mfrow = c(1, 2))
-boxplot(dataFinal$backers_count,ylim=c(0,500),xlab="Partial 0-500 boxplot")
 boxplot(dataFinal$backers_count,xlab="Full backers boxplot")
+boxplot(dataFinal$backers_count,xlab="Backers without outliers",outline=FALSE)
 
 
 cat("--Summary of goal $--")
@@ -159,8 +159,8 @@ cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$goal)$out)))
 cat("IQR: ", IQR(dataFinal$goal))
 
 par(mfrow = c(1, 2))
-boxplot(dataFinal$goal,ylim=c(0,30000),xlab="Partial 0-30000 boxplot")
 boxplot(dataFinal$goal,xlab="Full goal $ boxplot")
+boxplot(dataFinal$goal,xlab="Goal $ without outliers",outline=FALSE)
 
 
 cat("--Summary of pledged $--")
@@ -169,8 +169,8 @@ cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$pledged)$out)))
 cat("IQR: ", IQR(dataFinal$pledged))
 
 par(mfrow = c(1, 2))
-boxplot(dataFinal$pledged,ylim=c(0,20000),xlab="Partial 0-20000 boxplot")
 boxplot(dataFinal$pledged,xlab="Full pledged $ boxplot")
+boxplot(dataFinal$pledged,xlab="Full pledged $ without outliers",outline=FALSE)
 
 
 cat("--Summary of % raised--")
@@ -179,8 +179,8 @@ cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$pReached)$out)))
 cat("IQR: ", IQR(dataFinal$pReached))
 
 par(mfrow = c(1, 2))
-boxplot(dataFinal$pReached,ylim=c(0,400),xlab="Partial 0-400 boxplot")
 boxplot(dataFinal$pReached,xlab="Full % raised boxplot")
+boxplot(dataFinal$pReached,,xlab="% raused without outliers",outline=FALSE)
 
 
 ```
