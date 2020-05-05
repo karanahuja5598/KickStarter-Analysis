@@ -143,28 +143,45 @@ table(dataFinal$state)
 
 ```{r outliers, IQR, and statistic summaries}
 
+cat("--Summary of backers count--")
 summary(dataFinal$backers_count)
-sort(boxplot.stats(dataFinal$backers_count)$out)
-IQR(dataFinal$backers_count)
+cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$backers_count)$out)))
+cat("IQR: ", IQR(dataFinal$backers_count))
+
+par(mfrow = c(1, 2))
+boxplot(dataFinal$backers_count,ylim=c(0,500),xlab="Partial 0-500 boxplot")
+boxplot(dataFinal$backers_count,xlab="Full backers boxplot")
 
 
-boxplot(dataFinal$backers_count,ylim=c(0,2000))
-
-median(sort(boxplot.stats(dataFinal$backers_count)$out))
-mean(sort(boxplot.stats(dataFinal$backers_count)$out))
-
-dataFinal<-dataFinal[dataFinal$goal > 100,]
-boxplot(dataFinal$backers_count,ylim=c(0,2000))
-
+cat("--Summary of goal $--")
 summary(dataFinal$goal)
-#boxplot.stats(dataFinal$goal)$out
-IQR(dataFinal$goal)
+cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$goal)$out)))
+cat("IQR: ", IQR(dataFinal$goal))
 
+par(mfrow = c(1, 2))
+boxplot(dataFinal$goal,ylim=c(0,30000),xlab="Partial 0-30000 boxplot")
+boxplot(dataFinal$goal,xlab="Full goal $ boxplot")
+
+
+cat("--Summary of pledged $--")
 summary(dataFinal$pledged)
-#boxplot.stats(dataFinal$pledged)$out
-IQR(dataFinal$pledged)
+cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$pledged)$out)))
+cat("IQR: ", IQR(dataFinal$pledged))
 
-# TODO : add others here.... 
+par(mfrow = c(1, 2))
+boxplot(dataFinal$pledged,ylim=c(0,20000),xlab="Partial 0-20000 boxplot")
+boxplot(dataFinal$pledged,xlab="Full pledged $ boxplot")
+
+
+cat("--Summary of % raised--")
+summary(dataFinal$pReached)
+cat("Outliers count: ",length(sort(boxplot.stats(dataFinal$pReached)$out)))
+cat("IQR: ", IQR(dataFinal$pReached))
+
+par(mfrow = c(1, 2))
+boxplot(dataFinal$pReached,ylim=c(0,400),xlab="Partial 0-400 boxplot")
+boxplot(dataFinal$pReached,xlab="Full % raised boxplot")
+
 
 ```
 
