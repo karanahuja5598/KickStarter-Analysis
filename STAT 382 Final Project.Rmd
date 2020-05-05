@@ -259,7 +259,7 @@ The portion above adds a new column labeled "id". Every unique item under catego
 ```{r scatter plots}
 # TODO: Change to by category or leave as ID.
 
-#Creates a 1 x 4 picture of the graphs
+par(mfrow = c(1, 4))#Creates a 1 x 4 picture of the graphs
 
 plot(dataFinal$category, dataFinal$backers_count, xlab = "", ylab = "Backer Count", main = "Category vs Backer Count", col = "deepskyblue3",las =2, cex.names = .5)
 
