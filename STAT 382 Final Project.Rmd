@@ -301,14 +301,13 @@ cor(as.numeric(dataFinal$category), dataFinal$pledged)
 
 cor(as.numeric(dataFinal$category), dataFinal$pReached)
 
-#TODO :
-cat("COR analasys here")
+# The correlation of all four attributes are very close to 0. This shows that there is minimal to none relationship with the category.
 
 ```
 
 # 7) Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
 
-```{r Anove/Regression Analysis}
+```{r Anova/Regression Analysis}
 
 
 
