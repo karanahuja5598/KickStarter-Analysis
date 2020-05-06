@@ -13,23 +13,36 @@ output:
 knitr::opts_chunk$set(echo = TRUE, out.width = "140%")
 ```
 
-##### Framework
+## Framework
 ```{r file and summary}
 
 # Combined datasets 1,2,3,4 and exported as KickstarterBig.
 data <- read.csv("KickstarterBig.csv",na.strings=c("","NA"))
 
 ```
-##### 1) Set your hypothesis, have a specific goal.
+
+## Introduction
+  Kickstarter is an American crowdfunding platform that originally launched on April 28, 2009. 
+A crowdfunding platform is a place where individuals can post their project ideas in the hope of receiving funding for them from other individuals. 
+Those who post project ideas are called “Creators”, and those who support a project by providing some of their own personal income are called “Backers”. Since Kickstarter’s launch in 2009, it has had 484,179 projects created on its site. 
+These projects led to a reported total, by Kickstarter, of 17,777,617 backers with a total of 61,383,707 pledges done. 
+However, out of the 484,179 total projects created only 181,455 projects have been successfully funded to date. This constitutes a 37.67% success rate among projects. So what is it that determines a project's success rate? 
+We hypothesize that the success of a project depends on the category of the Project. 
+In other words, the success of a project depends on whether it is labeled as Arts, Games, Music, etc. 
+The results of this data analysis was that the category for the kickstarter project does not determine a project’s success rate.
+
+## Data
+
+## 1) Set your hypothesis, have a specific goal.
 ```{r hypothesis}
 
 # Our hypothesis is that the success of a Kickstarter project depends on the category of the Project. In other words, the success of a project depends on whether it is labeled as Arts, Games, Music, etc. 
 
 
 ```
-##### 2) Review your data to ensure that they are appropriate and complete and can help you prove or disprove your hypothesis.
-#### The focus of this project will be based on US projects with pledge type of USD and have completed the set lifespan of 30-90 days.
-#### To accomplish this parse for currency USD and select type to contain only successes and failures. In addition we will set a standard of a project to have a minimum goal of 100$ USD earned to make sure the project is worth considering. This assumption is generous and this bound could be increased furthed.
+## 2) Review your data to ensure that they are appropriate and complete and can help you prove or disprove your hypothesis.
+## The focus of this project will be based on US projects with pledge type of USD and have completed the set lifespan of 30-90 days.
+## To accomplish this parse for currency USD and select type to contain only successes and failures. In addition we will set a standard of a project to have a minimum goal of 100$ USD earned to make sure the project is worth considering. This assumption is generous and this bound could be increased furthed.
 ```{r data review}
 # Keep finished data for accuracy.
 data<-data[data$currency == "USD",]
@@ -41,11 +54,17 @@ data<-data[data$goal > 100,]
 
 ```
 
-##### 3)	Complete literature review on the subject/hypothesis and determine if there is any relevant research/study has been already completed. Study the literature and include citations in your final report.
+## 3)	Complete literature review on the subject/hypothesis and determine if there is any relevant research/study has been already completed. Study the literature and include citations in your final report.
 
-#### The review of similar project: [source](https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3f4a976419b9) These observations can be found on the project writeup under Literature Review.
+The review of a similar project: [source](https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3f4a976419b9)
+The synopsis of the project is below.
+A few studies focused on predicting the success of a project on platforms, such as Kickstarter, have already been done. One such study,  “Predicting the success of Kickstarter campaigns” was done by Adebola Lamidi. 
+However, his aim was different. The goal of his study was to uncover what factors affect the success of a project the most. 
+This means that his study focused more on analyzing how the duration of a project and amount of funding affected the success of a project. He also focused on how active the creator was (meaning updates and comments), how many backers a project had, and what category it belonged to (Arts, Music, etc).  
+These were all relatively simple variables and were quantified into averages and percentages in order to better compare the variables.  To reach a conclusion, Lamidi employed the use of the k-Nearest Neighbors 
+(kNN) algorithm, Random Forest, and Linear Regression. His conclusion, based on given variables, peaked at a 68% accuracy when predicting the success of a project. 
 
-##### 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
+## 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
 ```{r clean up}
 # remove first column from merge.
 dataR<-data[-1]
@@ -80,7 +99,15 @@ dataR <- as.data.frame(lapply(dataR, unlist))
 dataR$category <- as.factor(dataR$category)
 
 ```
-##### 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
+
+As you saw in the code blocks, we loaded in our data and then got the columns
+that we thought were relevant to our analysis. Once we had those columns, we had to parse a couple of columns because they were in JSON format.
+From there, we transformed some of the columns to factors and saved names of the unique categories.
+And now, we will begin the analysis.
+
+## Analysis
+
+## 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
 
 ## Varialbles we want to focus on and analyze:
 - (1) backers_count
@@ -90,7 +117,7 @@ dataR$category <- as.factor(dataR$category)
 - (5) usd_pledged [total raised]
 
 
-##### 5a. Check for missing data
+## 5a. Check for missing data
 ```{r missing data check and preliminarie }
 
 # Clean data
@@ -108,11 +135,9 @@ Fail<-dataFinal[dataFinal$state == "failed",]
 
 table(dataFinal$state)
 
-#summary(comparedf(Succ, Fail))
-
 ```
 
-##### 5b.	Check for outliers, IQR, and summarize the statistics.
+## 5b.	Check for outliers, IQR, and summarize the statistics.
 
 ```{r outliers, IQR, and statistic summaries}
 
@@ -158,7 +183,7 @@ boxplot(dataFinal$pReached,xlab="% raised without outliers",outline=FALSE)
 
 ```
 
-##### 5c.	Disect your variables in a way that will help you with your analysis.
+## 5c.	Disect your variables in a way that will help you with your analysis.
 ```{r variable dissection}
 
 # Categorizing the data by type of project
@@ -167,7 +192,7 @@ barplot(table(dataFinal$category),col= rainbow(15),las = 2,cex.names = .85,horiz
 
 
 ```
-##### 5d.	Determine the distribution (if any that your data follow, experimentally and theoretically)
+## 5d.	Determine the distribution (if any that your data follow, experimentally and theoretically)
 
 ```{r distribution}
 
@@ -190,7 +215,6 @@ plot(dataFinal$pReached[which(!dataFinal$pReached %in% boxplot.stats(dataFinal$p
 ```
 
 #The quantative variables do not follow any distributions.
-#TODO: Print tables out into html
 ```{r summary}
 
 summary(dataFinal$backers_count)
@@ -200,7 +224,26 @@ summary(dataFinal$dataFinal$pReached)
 
 ```
 
-##### 5e. Show your analysis in both tables/charts and visually (histograms, qqnorm plots, boxplots etc.Statistical Modeling)
+Our main focus for this project was how the category affected the success of a project and if it’s a good predictor for success. We began this analysis by filtering our data set into a 
+“Successful” and “Failed” section. Any project that hit 100 percent of its goal or higher fell under success. 
+Any that scored under 100% fell under failure. Live and canceled projects were not included in our analysis because the focus was on projects that had been successful or had failed. As such, projects that fell under 
+the status of “Live” or “Canceled”  were removed from our data set.
+
+## Issues
+
+When we began to do the analysis for our variables we noticed that there were an incredible amount of outliers. 
+First we had to determine how many outliers we had. After that, we determined what the outlier was and where it came from. The outliers that we found were rather extreme. Therefore, we opted for two separate graphs. 
+One would be our cleaned data with outliers and the other would be our cleaned data without outliers. 
+This applied to all our models as well. This solution also solved our other issue. 
+Originally, when we first began to test for correlation between variables, the relationship between them was extremely low (Hovering right around 0). At first, we believed it was due to a lack of data. 
+As such, we initially opted for adding more data in an attempt to create a relationship between them. However, it did not change our correlation value much. So we went back to review our data set. 
+Soon we discovered that the relationship between variables was being affected by the outliers present in our data set. We decided to re-examine the correlation between variables without the outliers present. 
+This led to an increase in our correlation values.  Another problem that we faced was that every project had a vastly different set goal and pledged values. 
+In order to solve this issue, we decided to convert our goals and pledges into percentages. This allowed us to compare and contrast them directly. 
+
+## Results
+
+## 5e. Show your analysis in both tables/charts and visually (histograms, qqnorm plots, boxplots etc.Statistical Modeling)
 
 ```{r tables/charts and graphs}
 
@@ -234,7 +277,7 @@ qqline(dataFinal$pReached)
 
 ```
 
-##### 6) Determine correlations, do correlation comparisons (technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
+## 6) Determine correlations, do correlation comparisons (technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
 ```{r adding an id to the items under category, include=FALSE}
 
 unique(dataFinal$category)
@@ -243,6 +286,7 @@ dataFinal <- transform(dataFinal, id = match(category, unique(category)))
 ```
 
 The portion above adds a new column labeled "id". Every unique item under category was given a unique id.
+This will help in the later part of the analysis.
 
 ```{r scatter plots}
 # TODO: Change to by category or leave as ID.
@@ -280,7 +324,7 @@ cor(as.numeric(dataFinal$category), dataFinal$pReached)
 
 ```
 
-##### 7) Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
+## 7) Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
 
 ```{r Anova/Regression Analysis}
 
@@ -313,36 +357,43 @@ summary(anova5)
 
 ```
 
-#Report
-The report should be written in R Markdown and then transformed to HTML.  Your report needs to have the following sections:
-  
-  Introduction - In this section, explain briefly the purpose of your analysis. Identify your hypothesis, and in a single sentence refer to the results of your work.
- 	
-  Data - a section describing the data set and how you loaded and transformed it in R.  Include R code blocks within your comments and explain what the code is doing.
- 	
- 	Analysis - walk through the analysis that you performed. Include R code blocks within your comments and explain what the code is doing.
+The code above proceeds to run some tests on each of our variables separately in order to understand what we were working with. We used scatter plots, histograms, box plots, etc. to visually represent our data 
+and to determine the distribution, spread, outliers, and such for each variable that we would be working with. Our visual analysis determined that our data did not follow any specific distribution nor spread. 
+It also determined that outliers were present in all of our variables. Afterward, we began by plotting variables against Category to determine the relationship between them. 
+We plotted Backer Count, Monetary Goal, Pledged, and USD Pledged against Category individually as shown in the plots above. We then found the correlation for each of our scatter plots. Our correlation values were 0.034, 0.002, 0.04, and -0.003 respectively. These correlation values were rather low. 
+They suggested a possibility that there was either a weak correlation between variables or no correlation at all. After determining our correlation values we proceeded to create a scatter plot matrix to see if a relationship between other variables existed. We also employed a regression test on our data set. Our Linear Multiple Regression Model had Category as our response variable. 
+Our predictor variables were Backer Count, Monetary Goal, Pledges, and USD Pledges. 
+The Linear Multiple Regression test gave us an R-Squared value of 0.002. Approximately 0.2% of the variation
+in Category can be explained by our model. Our residual standard error was 4.136 with 9447 degrees of freedom. 
+This tells us how far apart our values are from our predicted values. The results of this test and the anova test will be discussed below as these tests determined the fate of our hypothesis test.
 
-	Issues - Refer to any issues you had with collecting your data, cleaning your data, or implementing your model.
+## Discussion
 
-	Results - any plots, tables, or other results which gave you the answers to the questions that you were asked. Include R code blocks for any plots and explain what the code is doing.
+The regression model also uses the p-value to test against the null hypothesis that all model coefficients are zero. 
+Our p-value was approximately 0 (0.0001). Thus, we reject the null hypothesis. All model coefficients are not zero.
+Finally, we applied the Anova test to our data set. We ran the Anova test multiple times by comparing different variables against categories. Category vs Backer Count, Category vs Pledged, and Category vs pReached gave us p-values of (0.005), (1.5 x 10^-5), and (0.0003) respectively. 
+These three p-values are all less than 0.05 so we reject the null hypothesis. This suggests that there is, infact, a difference in variance between our variables. 
+Meanwhile, Category vs Monetary goal had a p-value of 0.324. This is greater than 0.05 so we fail to reject the null hypothesis. This suggests that there is no difference in variance between our variables.
+Our Linear Multiple Regression Model only explained 0.2% of our data set. Furthermore, analysis of the data concludes that the success of a project does not depend on the category. 
+As such, it is not a good predictor for success in a project. The amount of backers a project had and the monetary goal made for better predictors of success. 
+Thus, this ends our data analysis on kickstarter projects, when we began this analysis, we thought that
+category owuld play a hughe factor in making a project successful but we ended up being wrong.
+Ultimately, money decides the future of a project and it doesn't care for what the category is as it 
+depends more on the people's taste. This leads us to our future questions and analysis.
 
-	Discussion - a brief (one or two paragraphs) discussion of the results and how they validate or not your initial claims. 
+## Future Questions/Analysis
 
+After concluding that the success of a project does not depend on the category, other questions came to mind. 
+If category is not a good predictor of success, then what is? Would a model based on Monetary Goal, for example, be a better predictor? Or how about a model based on any of our other variables? 
+Were there other sources or areas that we did not consider for this analysis? Other studies of similar scope included variables that dealt with frequency of activity on a project and location. 
+These are areas that were not present in our data set. How would they have affected our analysis? Further analysis would have looked towards employing different models. 
+One such model that is not addressed in this project is the Random Forest. 
+Random Forest is a model that can be used for classification and regression tasks. 
+It is good at creating multiple trees with seemingly low correlation values and it then spits out a model that most accurately fits our data set. 
 
+## References
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3f4a976419b9
+https://webrobots.io/kickstarter-datasets
+https://www.kickstarter.com/help/stats
 
