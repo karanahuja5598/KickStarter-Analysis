@@ -33,7 +33,7 @@ data <- read.csv("KickstarterBig.csv",na.strings=c("","NA"))
 
 ```{r hypothesis}
 
-# ....... (this can be whatever u guys want.)
+# Our hypothesis is that the success of a Kickstarter project depends on the category of the Project. In other words, the success of a project depends on whether it is labeled as Arts, Games, Music, etc. 
 
 
 ```
@@ -339,29 +339,6 @@ The report should be written in R Markdown and then transformed to HTML.  Your r
 
 	Discussion - a brief (one or two paragraphs) discussion of the results and how they validate or not your initial claims. 
 
-```{r space}
-
-#Just here to add space
-
-```
-
-# Presentation
-You should prepare a brief (5-8 minutes) presentation on your project
-
-You should create a Powerpoint presentation on your report.
-
-Your Presentation should be narrated, or you should create a recorded video, presenting the Powerpoint.
-
-#The presentation should include:
-   	Introduction - quick reference to the problem you are analyzing and your data
-  	Hypothesis - main claim or claims you worked on
-  	Methodology - what statistical tools you used to complete your analysis and why?
-   	Issues - any issues you had while you run your analysis and how did you resolve them
-  	Tables, Charts and Graphs and measures with explanation for your EDA
-  	Results of Correlation, Regression, and ANOVA analysis
-  	Conclusions
-  	Future questions and further analysis not addressed in this project
-  	References
 
 
 
