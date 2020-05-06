@@ -13,57 +13,46 @@ output:
 knitr::opts_chunk$set(echo = TRUE, out.width = "140%")
 ```
 
-# Framework
+##### Framework
 ```{r file and summary}
 
-library(arsenal) # used for compare
-
-#Read in big data set
+# Combined datasets 1,2,3,4 and exported as KickstarterBig.
 data <- read.csv("KickstarterBig.csv",na.strings=c("","NA"))
 
 ```
-# 1) Set your hypothesis, have a specific goal.
-# Success of project based on backers, money raised, and category. (Quanitative variables are)
-# For hyp testing (how do these attributes effect the data)
-
-# Project with #(of backers) is successful, or 
-# Average project in technology raises #($) or
-# Average successful project has (# of backers) or
-
-
+##### 1) Set your hypothesis, have a specific goal.
 ```{r hypothesis}
 
 # Our hypothesis is that the success of a Kickstarter project depends on the category of the Project. In other words, the success of a project depends on whether it is labeled as Arts, Games, Music, etc. 
 
 
 ```
-
-# 2)	Review your data to ensure that they are appropriate and complete and can help you prove or disprove your hypothesis.
-
-# we want to only base our research on project on USD income and have finished.
-
+##### 2) Review your data to ensure that they are appropriate and complete and can help you prove or disprove your hypothesis.
+#### The focus of this project will be based on US projects with pledge type of USD and have completed the set lifespan of 30-90 days.
+#### To accomplish this parse for currency USD and select type to contain only successes and failures. In addition we will set a standard of a project to have a minimum goal of 100$ USD earned to make sure the project is worth considering. This assumption is generous and this bound could be increased furthed.
 ```{r data review}
-# We want to focus on US data only that have completed the project deadline.
+# Keep finished data for accuracy.
 data<-data[data$currency == "USD",]
 data<-data[data$state != "live",]
 data<-data[data$state != "canceled",]
 
-#Lets assume projects under goal of 100$ USD are innacurate data of reasonable project.
-
+# Lets assume projects under goal of 100$ USD are innacurate data of reasonable project.
 data<-data[data$goal > 100,]
 
 ```
 
-# 3)	Complete literature review on the subject/hypothesis and determine if there is any relevant research/study has been already completed. Study the literature and include citations in your final report.
+##### 3)	Complete literature review on the subject/hypothesis and determine if there is any relevant research/study has been already completed. Study the literature and include citations in your final report.
 
-# https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3f4a976419b9
+#### The review of similar project: [source](https://towardsdatascience.com/predicting-the-success-of-kickstarter-campaigns-3f4a976419b9) These observations can be found on the project writeup under Literature Review.
 
-
-# 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
+##### 4)	Once you ensure that your data are sufficient and you can initially rely on them to run your modeling, clean them up.
 ```{r clean up}
+# remove first column from merge.
 dataR<-data[-1]
+# keep relevant data features.
 dataR<-dataR[c(1,3,5,9,17,23,27,33)]
 
+# parse functions for parsing JSON categories and locations.
 parseCateg<-function(test){
 test<-gsub('"', "",test)
 sub(".*:parent_name",",",test)
@@ -72,7 +61,6 @@ sub(",.*","",test)
 test<-gsub("/.*","",test)
 test<-gsub(",.*","",test)
 }
-
 parseLoc<-function(test){
   test<-gsub('"', "",test)
   sub(".*:name",",",test)
@@ -80,34 +68,30 @@ parseLoc<-function(test){
   sub(",.*","",test)
 }
 
-
 dataR$category<-lapply(data$category,parseCateg)
 dataR$location<-lapply(data$location,parseLoc)
 
-
+# List all unique categories
 UniqueCat <- unique(dataR$category)
-print("The categories:",str(UniqueCat))
+cat("The categories:",str(UniqueCat))
 
-# Factorize descriptions
-
+# Factorize descriptions for later use
 dataR <- as.data.frame(lapply(dataR, unlist))
 dataR$category <- as.factor(dataR$category)
 
 ```
+##### 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
 
-Exploratory Analysis
-# 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
+> Varialbles we want to focus on and analyze:
+- (1) backers_count
+- (2) category of project
+- (3) goal amount [USD for project]
+- (4) pledged [amount of people supporting]
+- (5) usd_pledged [total raised]
 
-# Varialbles we want to focus on / analyze :
 
-# (1) backers_count
-# (2) category of project
-# (3) goal amount [USD for project]
-# (4) pledged [amount of people supporting]
-# (5) usd_pledged [total raised]
-
-# 5a. Check for missing data
-```{r missing data check / more prelims }
+##### 5a. Check for missing data
+```{r missing data check and preliminarie }
 
 # Clean data
 dataFinal <- dataR[rowSums(is.na(dataR))==0,]
@@ -128,8 +112,7 @@ table(dataFinal$state)
 
 ```
 
-# 5b.	Check for outliers, IQR, and summarize the statistics.
-# TODO : Make actual plots, and list the outliers ( how many, what are they, where are they from)
+##### 5b.	Check for outliers, IQR, and summarize the statistics.
 
 ```{r outliers, IQR, and statistic summaries}
 
@@ -175,19 +158,16 @@ boxplot(dataFinal$pReached,xlab="% raised without outliers",outline=FALSE)
 
 ```
 
-# 5c.	Disect your variables in a way that will help you with your analysis.
+##### 5c.	Disect your variables in a way that will help you with your analysis.
 ```{r variable dissection}
 
-# ----- lets categorise the data by type of project ----- #
+# Categorizing the data by type of project
 
 barplot(table(dataFinal$category),col= rainbow(15),las = 2,cex.names = .85,horiz = FALSE,beside=TRUE, xpd = FALSE, main="Project category popularity", ylab="Number of projects")
 
 
 ```
-
-# 5d.	Determine the distribution (if any that your data follow, experimentally and theoretically)
-# TODO  : Make this pretty, with labels, colors, ect, on graphs, and then make summaries of data here so we can
-# Transfer that directly onto our presentation when we are making the powerpoint
+##### 5d.	Determine the distribution (if any that your data follow, experimentally and theoretically)
 
 ```{r distribution}
 
@@ -210,7 +190,7 @@ plot(dataFinal$pReached[which(!dataFinal$pReached %in% boxplot.stats(dataFinal$p
 ```
 
 #The quantative variables do not follow any distributions.
-
+#TODO: Print tables out into html
 ```{r summary}
 
 summary(dataFinal$backers_count)
@@ -220,8 +200,7 @@ summary(dataFinal$dataFinal$pReached)
 
 ```
 
-# 5e. Show your analysis in both tables/charts and visually (histograms, qqnorm plots, boxplots etc.Statistical Modeling)
-# TODO : analysis 
+##### 5e. Show your analysis in both tables/charts and visually (histograms, qqnorm plots, boxplots etc.Statistical Modeling)
 
 ```{r tables/charts and graphs}
 
@@ -255,7 +234,7 @@ qqline(dataFinal$pReached)
 
 ```
 
-# 6) Determine correlations, do correlation comparisons (technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
+##### 6) Determine correlations, do correlation comparisons (technically and visually ) use both plots or pairs for your graphical representations. Split your graphs in ways that will help you to conclude and infer based on your model.
 ```{r adding an id to the items under category, include=FALSE}
 
 unique(dataFinal$category)
@@ -282,8 +261,7 @@ plot(dataFinal$category, dataFinal$pReached, xlab = "", ylab = "Percentage Raise
 
 ```{r scatter plot matrix}
 
-# fix it to be by category
-
+# plots by cattegory 
 pairs(dataFinal$category~dataFinal$backers_count + dataFinal$goal + dataFinal$pledged + dataFinal$pReached, main = "Backer Count, Goal, Pledged, USD Pledged vs Category")
 
 ```
@@ -302,7 +280,7 @@ cor(as.numeric(dataFinal$category), dataFinal$pReached)
 
 ```
 
-# 7) Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
+##### 7) Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
 
 ```{r Anova/Regression Analysis}
 
