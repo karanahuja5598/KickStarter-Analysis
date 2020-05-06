@@ -234,7 +234,7 @@ the status of “Live” or “Canceled”  were removed from our data set.
 When we began to do the analysis for our variables we noticed that there were an incredible amount of outliers. 
 First we had to determine how many outliers we had. After that, we determined what the outlier was and where it came from. The outliers that we found were rather extreme. Therefore, we opted for two separate graphs. 
 One would be our cleaned data with outliers and the other would be our cleaned data without outliers. 
-This applied to all our models as well. This solution also solved our other issue. 
+This applied to all most models shown in graphings comparing the data with and without outliers. This solution also solved our other issue. 
 Originally, when we first began to test for correlation between variables, the relationship between them was extremely low (Hovering right around 0). At first, we believed it was due to a lack of data. 
 As such, we initially opted for adding more data in an attempt to create a relationship between them. However, it did not change our correlation value much. So we went back to review our data set. 
 Soon we discovered that the relationship between variables was being affected by the outliers present in our data set. We decided to re-examine the correlation between variables without the outliers present. 
@@ -291,15 +291,33 @@ This will help in the later part of the analysis.
 ```{r scatter plots}
 # TODO: Change to by category or leave as ID.
 
-par(mfrow = c(1, 4))#Creates a 1 x 4 picture of the graphs
-
+par(mfrow = c(1, 2)) #Creates a 1 x 2 picture of the graphs
 plot(dataFinal$category, dataFinal$backers_count, xlab = "", ylab = "Backer Count", main = "Category vs Backer Count", col = "deepskyblue3",las =2, cex.names = .5)
-
 plot(dataFinal$category, dataFinal$goal, xlab = "", ylab = "Goal", main = "Category vs Goal", col = "purple3",las =2,cex.names = .5)
 
+par(mfrow = c(1, 2))
 plot(dataFinal$category, dataFinal$pledged, xlab = "", ylab = "Pledged", main = "Category vs Pledged", col = "indianred3",las =2,cex.names = .5)
-
 plot(dataFinal$category, dataFinal$pReached, xlab = "", ylab = "Percentage Raised",cex.names = .25, main = "Category vs % Raised", col = "goldenrod1",las =2,beside=TRUE, xpd = FALSE)
+
+
+par(mfrow = c(1, 2)) #Creates a 1 x 2 picture of the graphs
+plot(dataFinal$category[which(!dataFinal$backers_count %in% boxplot.stats(dataFinal$backers_count)$out)], dataFinal$backers_count[which(!dataFinal$backers_count %in% boxplot.stats(dataFinal$backers_count)$out)], xlab = "", ylab = "Backer Count", main = "Category vs Backer Count !Outliers", col = "deepskyblue3",las =2, cex.names = .5)
+plot(dataFinal$category[which(!dataFinal$goal %in% boxplot.stats(dataFinal$goal)$out)], dataFinal$goal[which(!dataFinal$goal %in% boxplot.stats(dataFinal$goal)$out)], xlab = "", ylab = "Goal", main = "Category vs Goal !Outliers", col = "purple3",las =2,cex.names = .5)
+
+
+par(mfrow = c(1, 2))
+plot(dataFinal$category[which(!dataFinal$pledged %in% boxplot.stats(dataFinal$pledged)$out)], 
+     dataFinal$pledged[which(!dataFinal$pledged %in% boxplot.stats(dataFinal$pledged)$out)], xlab = "", ylab = "Pledged", main = "Category vs Pledged !Outliers", col = "indianred3",las =2,cex.names = .5)
+plot(dataFinal$category[which(!dataFinal$pReached %in% boxplot.stats(dataFinal$pReached)$out)], dataFinal$pReached[which(!dataFinal$pReached %in% boxplot.stats(dataFinal$pReached)$out)], xlab = "", ylab = "Percentage Raised !Outliers",cex.names = .25, main = "Category vs % Raised", col = "goldenrod1",las =2,beside=TRUE, xpd = FALSE)
+
+
+par(mfrow = c(1, 4)) #Creates a 1 x 2 picture of the graphs of no outliers  
+
+plot(dataFinal$backers_count[which(!dataFinal$backers_count %in% boxplot.stats(dataFinal$backers_count)$out)], ylab = "# of Backers", main = "Backer Count No outliers", col = "deepskyblue3")
+plot(dataFinal$goal[which(!dataFinal$goal %in% boxplot.stats(dataFinal$goal)$out)], ylab = "Goals in $", main = "Monetary Goal No outliers", col = "purple3")
+plot(dataFinal$pledged[which(!dataFinal$pledged %in% boxplot.stats(dataFinal$pledged)$out)], ylab = "Amount pledged", main = "Pledged No outliers", col = "indianred3")
+plot(dataFinal$pReached[which(!dataFinal$pReached %in% boxplot.stats(dataFinal$pReached)$out)], ylab = "Amount % Reached to goal No outliers", main = "USD Pledged", col = "goldenrod1",ylim=c(100,350))
+
 
 ```
 
