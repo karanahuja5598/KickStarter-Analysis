@@ -82,7 +82,7 @@ dataR$category <- as.factor(dataR$category)
 ```
 ##### 5)	Run Exploratory analysis on at least 5 total variables where 2 of them are quantitative.
 
-> Varialbles we want to focus on and analyze:
+## Varialbles we want to focus on and analyze:
 - (1) backers_count
 - (2) category of project
 - (3) goal amount [USD for project]
