@@ -308,6 +308,20 @@ cor(as.numeric(dataFinal$category), dataFinal$pReached)
 
 regressModel <- lm(dataFinal$id~dataFinal$backers_count+dataFinal$goal+dataFinal$pledged+dataFinal$pReached,data = dataFinal)
 summary(regressModel)
+
+# create vector of names that correspond to the numerical categories
+catNames<-c("technology", "music", "crafts", "publishing", "design", "art", "theater", "fashion", "games", "food", "film & video", "comics", "journalism", "photography", "dance")
+
+plot(dataFinal$id,resid(regressModel),xlab="",xaxt = "n")
+axis(1, at=1:15, labels=catNames,las =2)
+abline(h=0)
+#abline(regressModel)
+
+# verifies they appear random and reasonably constant variance
+qqnorm(resid(regressModel))  #check whether normal
+qqline(resid(regressModel))
+confint(regressModel) #gives confidence intervals for the parameters of the line.
+
 anova1 <- aov(id~backers_count, data = dataFinal)
 summary(anova1)
 anova2 <- aov(id~goal, data = dataFinal)
