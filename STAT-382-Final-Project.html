@@ -672,7 +672,6 @@ pairs(dataFinal$category~dataFinal$backers_count + dataFinal$goal + dataFinal$pl
 <div id="your-model-and-main-hypothesis-should-be-answered-either-using-anova-or-regression-analysis-or-both.---this-may-mean-depending-on-your-data-that-you-may-need-to-use-a-categorical-variable-to-dissect-your-data-and-that-you-may-need-to-have-data-with-many-more-than-just-2-quantitative-variables." class="section level1">
 <h1>7) Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.</h1>
 <pre class="r"><code>regressModel &lt;- lm(dataFinal$id~dataFinal$backers_count+dataFinal$goal+dataFinal$pledged+dataFinal$pReached,data = dataFinal)
-
 summary(regressModel)</code></pre>
 <pre><code>## 
 ## Call:
@@ -697,7 +696,6 @@ summary(regressModel)</code></pre>
 ## Multiple R-squared:  0.002337,   Adjusted R-squared:  0.001915 
 ## F-statistic: 5.533 on 4 and 9447 DF,  p-value: 0.0001908</code></pre>
 <pre class="r"><code>anova1 &lt;- aov(id~backers_count, data = dataFinal)
-
 summary(anova1)</code></pre>
 <pre><code>##                 Df Sum Sq Mean Sq F value  Pr(&gt;F)   
 ## backers_count    1    134  133.83   7.815 0.00519 **
@@ -705,13 +703,11 @@ summary(anova1)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>anova2 &lt;- aov(id~goal, data = dataFinal)
-
 summary(anova2)</code></pre>
 <pre><code>##               Df Sum Sq Mean Sq F value Pr(&gt;F)
 ## goal           1     17   16.65   0.972  0.324
 ## Residuals   9450 161949   17.14</code></pre>
 <pre class="r"><code>anova3 &lt;- aov(id~pledged, data = dataFinal)
-
 summary(anova3)</code></pre>
 <pre><code>##               Df Sum Sq Mean Sq F value  Pr(&gt;F)    
 ## pledged        1    321   320.9   18.76 1.5e-05 ***
@@ -719,7 +715,6 @@ summary(anova3)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>anova4 &lt;- aov(id~pReached, data = dataFinal)
-
 summary(anova4)</code></pre>
 <pre><code>##               Df Sum Sq Mean Sq F value   Pr(&gt;F)    
 ## pReached       1    215  214.98   12.56 0.000396 ***
@@ -727,7 +722,6 @@ summary(anova4)</code></pre>
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
 <pre class="r"><code>anova5 &lt;- aov(id~backers_count+goal+pledged+pReached, data = dataFinal)
-
 summary(anova5)</code></pre>
 <pre><code>##                 Df Sum Sq Mean Sq F value   Pr(&gt;F)    
 ## backers_count    1    134  133.83   7.824 0.005165 ** 
