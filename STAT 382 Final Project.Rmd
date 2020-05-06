@@ -275,8 +275,7 @@ plot(dataFinal$category, dataFinal$pReached, xlab = "", ylab = "Percentage Raise
 
 # fix it to be by category
 
-pairs(~dataFinal$backers_count + dataFinal$goal + dataFinal$pledged + dataFinal$pReached +
-       dataFinal$category, main = "Backer Count, Goal, Pledged, USD Pledged vs Category")
+pairs(dataFinal$category~dataFinal$backers_count + dataFinal$goal + dataFinal$pledged + dataFinal$pReached, main = "Backer Count, Goal, Pledged, USD Pledged vs Category")
 
 ```
 
@@ -297,6 +296,29 @@ cor(as.numeric(dataFinal$category), dataFinal$pReached)
 # 7) Your model and main hypothesis should be answered either using ANOVA or Regression Analysis, or both. - This may mean, depending on your data, that you may need to use a categorical variable to dissect your data, and that you may need to have data with many more than just 2 quantitative variables.
 
 ```{r Anova/Regression Analysis}
+regressModel <- lm(dataFinal$id~dataFinal$backers_count+dataFinal$goal+dataFinal$pledged+dataFinal$pReached,data = dataFinal)
+
+summary(regressModel)
+
+anova1 <- aov(id~backers_count, data = dataFinal)
+
+summary(anova1)
+
+anova2 <- aov(id~goal, data = dataFinal)
+
+summary(anova2)
+
+anova3 <- aov(id~pledged, data = dataFinal)
+
+summary(anova3)
+
+anova4 <- aov(id~pReached, data = dataFinal)
+
+summary(anova4)
+
+anova5 <- aov(id~backers_count+goal+pledged+pReached, data = dataFinal)
+
+summary(anova5)
 
 
 
