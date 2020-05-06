@@ -498,10 +498,24 @@ dataFinal$pReached&lt;- ifelse(dataFinal$state == &quot;successful&quot;, ( data
 Succ&lt;-dataFinal[dataFinal$state == &quot;successful&quot;,]
 Fail&lt;-dataFinal[dataFinal$state == &quot;failed&quot;,]
 
-table(dataFinal$state)</code></pre>
-<pre><code>## 
-##   canceled     failed       live successful 
-##          0       3515          0       5937</code></pre>
+table(dataFinal$category,dataFinal$state)</code></pre>
+<pre><code>##               
+##                canceled failed live successful
+##   art                 0    417    0        601
+##   comics              0     75    0        329
+##   crafts              0    126    0        146
+##   dance               0     39    0        265
+##   design              0    110    0        257
+##   fashion             0    111    0        276
+##   film &amp; video        0    563    0        850
+##   food                0    471    0        344
+##   games               0    182    0        355
+##   journalism          0    152    0         87
+##   music               0    426    0        987
+##   photography         0    102    0        142
+##   publishing          0    249    0        768
+##   technology          0    422    0        358
+##   theater             0     70    0        172</code></pre>
 </div>
 <div id="b.-check-for-outliers-iqr-and-summarize-the-statistics." class="section level2">
 <h2>5b. Check for outliers, IQR, and summarize the statistics.</h2>
